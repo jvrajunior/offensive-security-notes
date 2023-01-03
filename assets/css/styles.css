@@ -1,0 +1,27 @@
+* {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: small;
+}
+
+input#myInput {
+  width: 220px;
+}
+table#myTable {
+  width: 100%;
+  text-align: center;
+}
+table#myTable th {
+  padding: 20px 0 10px;
+  width: auto;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.item {
+  padding-top: 0.5rem;
+  padding-right: 1rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  
+}

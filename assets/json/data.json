@@ -1,0 +1,34 @@
+[
+  {
+    "tool": "nmap",
+    "payload": "nmap -sS -pN -p- --min-rate 5000 --open -oG allPorts.txt $RHOST",
+    "so": ["Linux","Windows"],
+    "service": "-",
+    "port": 0,
+    "note": "Realiza um scan rápido por portas abertas no alvo."
+  },
+  {
+    "tool": "smbclient",
+    "payload": "smbclient $RHOST",
+    "so": ["Linux","Windows"],
+    "service": "SMB",
+    "port": 445,
+    "note": "Conexão via SMB com usuário anônimo."
+  },
+  {
+    "tool": "smbclienta",
+    "payload": "smbclient $RHOSTs",
+    "so": ["Linux","Windows"],
+    "service": "SMB",
+    "port": [445,25],
+    "note": "Conexão via SMB com usuário anônimo."
+  },
+  {
+    "tool": "",
+    "payload": "",
+    "so": [],
+    "service": "",
+    "port": [],
+    "note": ""
+  }
+]
