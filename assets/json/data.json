@@ -240,6 +240,86 @@
     "note": ""
   },
   {
+    "tool": ["openssl"],
+    "description":"Aplicar função de hash com salt",
+    "command": "openssl passwd -6 -salt $SALT $TEXT",
+    "service": [],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["jhon"],
+    "description":"unshadow $PASSWD $SHADOW > $FILEOUT",
+    "command": "Preparar arquivos passwd e shadow para quebra do hash",
+    "service": [],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["SAM"],
+    "description":"Armazena as contas de usuários",
+    "command": "%SystemRoot%/system32/config/sam",
+    "service": [],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["NTDS.DIT"],
+    "description":"Armazena dados do AD incluindo as contas de usuários",
+    "command": "%SystemRoot%/ntds/ntds.dit",
+    "service": [],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["SYSTEM"],
+    "description":"Arquivo do sistema necessário para decriptar o SAM/NTDS.DIT",
+    "command": "%SystemRoot%/system32/config/system",
+    "service": [],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": [],
+    "description":"Baixar registros de usuários do Windows",
+    "command": "reg save hklm|sam",
+    "service": [],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": "Baixar também o aquivo system"
+  },
+  {
+    "tool": [],
+    "description":"Procurar registros de usuários do Windows",
+    "command": "C:\/Windows\/repair",
+    "service": [],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": "Somente Windows XP/2003"
+  },
+  {
+    "tool": [],
+    "description":"",
+    "command": "",
+    "service": [],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": ""
+  },
+  {
     "tool": [],
     "description":"",
     "command": "",
