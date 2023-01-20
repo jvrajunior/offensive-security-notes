@@ -230,6 +230,16 @@
     "note": ""
   },
   {
+    "tool": ["john"],
+    "description":"Brute force de um hash específico",
+    "command": "john --format=netntlmv2 $HASH --wordlist=$WORDLIST",
+    "service": [],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": "Troque netntlmv2 pelo nome do hash que gostaria de quebrar."
+  },
+  {
     "tool": ["hashcat"],
     "description":"Brute force básico de hash SHA1",
     "command": "hashcat -m 100 $HASH $WORDLIST --force",
