@@ -310,6 +310,16 @@
     "note": "Ao utilizar as flags em maiusuculo é possível carregar uma lista"
   },
   {
+    "tool": ["hydra"],
+    "description":"Realizar brute force em requisição HTTP POST",
+    "command": "hydra -v -L $USER -P $PASS $RHOST http-post-form '/diretorio/login.php:login=^USER^&senha=^PASS^&Login:incorreto'" ,
+    "service": [],
+    "port": [],
+    "category": ["Bruteforce","Enumeration"],
+    "so": [],
+    "note": "O módulo 'http-post-form' segue o seguinte padrão: 'diretório:parâmetros:filtro'"
+  },
+  {
     "tool": ["cewl"],
     "description":"Gerar wordlist personalizada à partir de palavras encontradas no website",
     "command": "cewl $RHOST -m 7",

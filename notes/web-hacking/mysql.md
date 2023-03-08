@@ -8,7 +8,7 @@ Iniciar um serviço de banco de dados
 Logar no banco de dados
 `mysql -u root`
 
-### Comandos
+### Comandos MySQL
 
 Visualizar database
 `select database();`
@@ -76,7 +76,7 @@ Descobrir o tamanho de um dado
 `select lenght("desec");`
 
 Retornar um range de caracteres
-`select substring("desec",1,3);`
+`select substring("desec",1,1);`
 
 Excluir uma base de dados
 `drop database teste;`
